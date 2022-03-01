@@ -40,7 +40,7 @@
           "isApi": false,
           "clientType": "Confidential",
           "redirectUrls": [
-            "$paarameter('appReplyUrl')"
+            "$parameter('appReplyUrl')"
           ],
           "applicationUrl": "$parameter('appUrl')",
           "allowImplicitGrantFlow": true,
