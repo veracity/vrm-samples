@@ -1,0 +1,27 @@
+[
+    {
+      "name": "rgName",
+      "value": "Production",
+      "type": "string"
+    },
+    {
+      "name": "serviceName",
+      "value": "DemoService",
+      "type": "string"
+    },
+    {
+      "name": "appName",
+      "value": "DemoApp",
+      "type": "string"
+    },
+    {
+      "name": "appUrl",
+      "value": "https://localhost:3000",
+      "type": "string"
+    },
+    {
+      "name": "appReplyUrl",
+      "value": "https://localhost:3000/signin-oidc",
+      "type": "string"
+    }
+  ]

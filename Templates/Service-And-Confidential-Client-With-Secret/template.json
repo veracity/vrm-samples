@@ -1,7 +1,7 @@
 {
     "resourceGroup": {
     "name": "$parameter('rgName')",
-    "isProduction": false,
+    "isProduction": true,
     "description": "VRM-Test",
     "tags": [ "demo", "test"]
   },
@@ -52,7 +52,8 @@
           "publishedScopes": [],
           "services": [
             "$resources[?name== parameter('serviceName')].id"
-          ]
+          ],
+          "secretManagementOptions": "rollover"
         },
         "advanced": {
           "apiProductSubscriptions": [
@@ -88,6 +89,11 @@
     {
       "name": "clientId",
       "value": "$resources[?name== parameter('appName')].id",
+      "type": "string"
+    },
+    {
+      "name": "secret",
+      "value": "$resources[?name== parameter('appName')].sections.properties.secrets[0].secretText",
       "type": "string"
     }
   ]
