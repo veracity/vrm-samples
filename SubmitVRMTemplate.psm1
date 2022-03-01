@@ -45,37 +45,33 @@ param(
     $parametersBytes = [System.Text.Encoding]::UTF8.GetBytes($parameters)
     $parametersString =[Convert]::ToBase64String($parametersBytes)
     $payload = @{format=$format;template=$templateString;parameters=$parametersString} | ConvertTo-Json
-    $cursor = $host.UI.RawUI.CursorPosition
-    $cursor.Y -= 1
     Write-Host -ForegroundColor yellow "`nSubmiting template..."
     try {
         $response = Invoke-RestMethod $url -Method Post -Body $payload -Headers $headers -ContentType 'application/json'
         $bytes=[Convert]::FromBase64String($response)
         $json=[System.Text.Encoding]::UTF8.GetString($bytes)
-        $host.UI.RawUI.CursorPosition = $cursor
-        Write-Host -ForegroundColor green "Response:                "
+        Write-Host -ForegroundColor green "Response:"
         Write-Output $json | ConvertFrom-Json | ConvertTo-Json -Depth 5
     }
     catch {
-        $host.UI.RawUI.CursorPosition = $cursor
-        Write-Host -ForegroundColor red "Error:                "
-        Write-Output (ParseErrorForResponseBody($_) | ConvertFrom-Json | ConvertTo-Json -Depth 5 )
+        Write-Host -ForegroundColor red "Error:"
+        Write-Output (ParseErrorResponse($_) | ConvertFrom-Json | ConvertTo-Json -Depth 5 )
     }
 }
 
 # Helper function to support Powershell older than version 6
-function ParseErrorForResponseBody($Error) {
+function ParseErrorResponse($result) {
     if ($PSVersionTable.PSVersion.Major -lt 6) {
-        if ($Error.Exception.Response) {  
-            $Reader = New-Object System.IO.StreamReader($Error.Exception.Response.GetResponseStream())
-            $Reader.BaseStream.Position = 0
-            $Reader.DiscardBufferedData()
-            $ResponseBody = $Reader.ReadToEnd()
-            return $ResponseBody
+        if ($result.Exception.Response) {  
+            $streamReader = New-Object System.IO.StreamReader($result.Exception.Response.GetResponseStream())
+            $streamReader.BaseStream.Position = 0
+            $streamReader.DiscardBufferedData()
+            $content = $streamReader.ReadToEnd()
+            return $content
         }
     }
     else {
-        return $Error.ErrorDetails.Message
+        return $result.ErrorDetails.Message
     }
 }
 
