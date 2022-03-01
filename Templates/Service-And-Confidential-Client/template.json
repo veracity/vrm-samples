@@ -1,0 +1,94 @@
+{
+    "resourceGroup": {
+    "name": "$parameter('rgName')",
+    "isProduction": true,
+    "description": "VRM-Test",
+    "tags": [ "demo", "test"]
+  },
+  "resources": [
+    {
+      "sections": {
+        "properties": {
+          "businessOwnerId": null,
+          "description": "",
+          "category": null,
+          "shortName": "VRM_Service",
+          "openInNewTab": true,
+          "visible": true,
+          "serviceUrl": "$parameter('appUrl')",
+          "shortDescription": "",
+          "technicalContactEmail": "",
+          "providerCompanyName": null
+        },
+        "advanced": {
+          "parentServiceId": null,
+          "childServiceIds": [],
+          "passwordPolicy": null,
+          "accessLevels": {
+            "useAccessLevels": false,
+            "accessLevels": null
+          }
+        }
+      },
+      "name": "$parameter('serviceName')",
+      "sku": "standard",
+      "resourceType": "veracity.service"
+    },
+    {
+      "sections": {
+        "properties": {
+          "isApi": false,
+          "clientType": "Confidential",
+          "redirectUrls": [
+            "$paarameter('appReplyUrl')"
+          ],
+          "applicationUrl": "$parameter('appUrl')",
+          "allowImplicitGrantFlow": true,
+          "appIdUri": null,
+          "tokenVersion": 2,
+          "publishedScopes": [],
+          "services": [
+            "$resources[?name== parameter('serviceName')].id"
+          ]
+        },
+        "advanced": {
+          "apiProductSubscriptions": [
+            {
+              "productId": "veracity-platfrom-api",
+              "productName": "Veracity Platform API"
+            }
+          ],
+          "clients": [],
+          "apiAcceses": [
+            {
+              "apiClientId": "83054ebf-1d7b-43f5-82ad-b2bde84d7b75",
+              "scopes": [
+                "user_impersonation"
+              ]
+            }
+          ]
+        }
+      },
+      "name": "$parameter('appName')",
+      "sku": "app",
+      "resourceType": "veracity.application"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "serviceId",
+      "value": "$resources[?name== parameter('serviceName')].id",
+      "type": "string"
+    },
+    {
+      "name": "apimProduct",
+      "value": "$resources[?name== parameter('appName')].sections.advanced.apiProductSubscriptions[*].{id:productId,subscriptionKey:key}",
+      "type": "object"
+    },
+    {
+      "name": "clientId",
+      "value": "$resources[?name== parameter('appName')].id",
+      "type": "string"
+    }
+  ]
+}
