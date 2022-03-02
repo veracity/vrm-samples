@@ -3,7 +3,8 @@
     "name": "$parameter('rgName')",
     "isProduction": true,
     "description": "VRM-Test",
-    "tags": [ "demo", "test"]
+    "tags": [ "demo", "test"],
+    "locked": true
   },
   "resources": [
     {
