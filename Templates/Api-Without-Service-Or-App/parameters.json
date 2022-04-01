@@ -1,0 +1,17 @@
+[
+  {
+    "name": "rgName",
+    "value": "ApiWithoutServiceOrApp",
+    "type": "string"
+  },
+  {
+    "name": "apiName",
+    "value": "ApiWithoutServiceOrApp",
+    "type": "string"
+  },
+  {
+    "name": "apiClientId",
+    "value": "83054ebf-1d7b-43f5-82ad-b2bde84d7b75",
+    "type": "string"
+  }
+]

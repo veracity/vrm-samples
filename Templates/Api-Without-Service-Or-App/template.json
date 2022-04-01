@@ -1,0 +1,58 @@
+{
+  "resourceGroup": {
+    "name": "$parameter('rgName')",
+    "isProduction": false,
+    "description": "VRM-sample",
+    "tags": ["sample"]
+  },
+  "resources": [
+    {
+      "name": "$parameter('apiName')",
+      "sku": "api",
+      "resourceType": "veracity.application",
+      "locked": true,
+      "sections": {
+        "properties": {
+          "isApi": true,
+          "clientType": "None",
+          "redirectUrls": [],
+          "applicationUrl": null,
+          "publishedScopes": [
+            {
+              "description": "Short description of scope",
+              "scopeName": "user_impersonation"
+            },
+            {
+              "description": "Short description of scope",
+              "scopeName": "user_management"
+            }
+          ],
+          "services": [],
+          "secretManagementOptions": null
+        },
+        "advanced": {
+          "apiProductSubscriptions": [
+            {
+              "productId": "veracity-platfrom-api",
+              "productName": "Veracity Platform API"
+            }
+          ],
+          "clients": [],
+          "apiAcceses": [
+            {
+              "apiClientId": "$parameter('apiClientId')",
+              "scopes": ["user_impersonation"]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "apiId",
+      "value": "$resources[?name== parameter('apiName')].id",
+      "type": "string"
+    }
+  ]
+}

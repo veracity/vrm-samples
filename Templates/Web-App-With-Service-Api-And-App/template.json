@@ -1,0 +1,138 @@
+{
+  "resourceGroup": {
+    "name": "$parameter('rgName')",
+    "isProduction": false,
+    "description": "VRM-sample",
+    "tags": ["sample"]
+  },
+  "resources": [
+    {
+      "name": "$parameter('serviceName')",
+      "sku": "standard",
+      "resourceType": "veracity.service",
+      "locked": true,
+      "sections": {
+        "properties": {
+          "businessOwnerId": null,
+          "description": "",
+          "category": null,
+          "shortName": "VRM_Service",
+          "openInNewTab": true,
+          "visible": true,
+          "serviceUrl": "$parameter('serviceUrl')",
+          "shortDescription": "",
+          "technicalContactEmail": "",
+          "providerCompanyName": null
+        },
+        "advanced": {
+          "parentServiceId": null,
+          "childServiceIds": [],
+          "passwordPolicy": null,
+          "accessLevels": {
+            "useAccessLevels": false,
+            "accessLevels": null
+          }
+        }
+      }
+    },
+    {
+      "name": "$parameter('appName')",
+      "sku": "app",
+      "resourceType": "veracity.application",
+      "locked": true,
+      "sections": {
+        "properties": {
+          "isApi": false,
+          "clientType": "Public",
+          "redirectUrls": ["$parameter('appReplyUrl')"],
+          "applicationUrl": "$parameter('appUrl')",
+          "publishedScopes": [],
+          "services": ["$resources[?name== parameter('serviceName')].id"]
+        },
+        "advanced": {
+          "apiProductSubscriptions": [
+            {
+              "productId": "veracity-platfrom-api",
+              "productName": "Veracity Platform API"
+            }
+          ],
+          "clients": [],
+          "apiAcceses": [
+            {
+              "apiClientId": "$parameter('apiClientId')",
+              "scopes": ["user_impersonation"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "$parameter('apiName')",
+      "sku": "api",
+      "resourceType": "veracity.application",
+      "locked": true,
+      "sections": {
+        "properties": {
+          "isApi": true,
+          "clientType": "None",
+          "redirectUrls": [],
+          "applicationUrl": null,
+          "publishedScopes": [
+            {
+              "description": "Short description of scope",
+              "scopeName": "user_impersonation"
+            },
+            {
+              "description": "Short description of scope",
+              "scopeName": "user_management"
+            }
+          ],
+          "services": [],
+          "secretManagementOptions": null
+        },
+        "advanced": {
+          "apiProductSubscriptions": [
+            {
+              "productId": "veracity-platfrom-api",
+              "productName": "Veracity Platform API"
+            }
+          ],
+          "clients": [
+            {
+              "clientId": "$resources[?name== parameter('appName')].id",
+              "scopes": ["user_impersonation", "user_management"]
+            }
+          ],
+          "apiAcceses": [
+            {
+              "apiClientId": "$parameter('apiClientId')",
+              "scopes": ["user_impersonation"]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "serviceId",
+      "value": "$resources[?name== parameter('serviceName')].id",
+      "type": "string"
+    },
+    {
+      "name": "apimProduct",
+      "value": "$resources[?name== parameter('appName')].sections.advanced.apiProductSubscriptions[*].{id:productId,subscriptionKey:key}",
+      "type": "object"
+    },
+    {
+      "name": "clientId",
+      "value": "$resources[?name== parameter('appName')].id",
+      "type": "string"
+    },
+    {
+      "name": "apiId",
+      "value": "$resources[?name== parameter('apiName')].id",
+      "type": "string"
+    }
+  ]
+}
