@@ -1,0 +1,37 @@
+[
+  {
+    "name": "rgName",
+    "value": "ServiceAndWebFront",
+    "type": "string"
+  },
+  {
+    "name": "serviceName",
+    "value": "ServiceWithApp",
+    "type": "string"
+  },
+  {
+    "name": "serviceUrl",
+    "value": "https://localhost:3000",
+    "type": "string"
+  },
+  {
+    "name": "appName",
+    "value": "AppWithService",
+    "type": "string"
+  },
+  {
+    "name": "appUrl",
+    "value": "https://localhost:3000",
+    "type": "string"
+  },
+  {
+    "name": "appReplyUrl",
+    "value": "https://localhost:3000/signin-oidc",
+    "type": "string"
+  },
+  {
+    "name": "apiClientId",
+    "value": "83054ebf-1d7b-43f5-82ad-b2bde84d7b75",
+    "type": "string"
+  }
+]

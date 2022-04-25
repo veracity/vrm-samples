@@ -1,0 +1,104 @@
+{
+  "resourceGroup": {
+    "name": "$parameter('rgName')",
+    "isProduction": false,
+    "description": "VRM-sample",
+    "tags": ["sample"]
+  },
+  "resources": [
+    {
+      "name": "$parameter('appName')",
+      "sku": "app",
+      "resourceType": "veracity.application",
+      "locked": true,
+      "sections": {
+        "properties": {
+          "isApi": false,
+          "clientType": "Spa",
+          "redirectUrls": ["$parameter('appReplyUrl')"],
+          "applicationUrl": null,
+          "publishedScopes": [],
+          "services": []
+        },
+        "advanced": {
+          "apiProductSubscriptions": [
+            {
+              "productId": "veracity-platfrom-api",
+              "productName": "Veracity Platform API"
+            }
+          ],
+          "clients": [],
+          "apiAcceses": [
+            {
+              "apiClientId": "$parameter('apiClientId')",
+              "scopes": ["user_impersonation"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "$parameter('apiName')",
+      "sku": "api",
+      "resourceType": "veracity.application",
+      "locked": true,
+      "sections": {
+        "properties": {
+          "isApi": true,
+          "clientType": "None",
+          "redirectUrls": [],
+          "applicationUrl": null,
+          "publishedScopes": [
+            {
+              "description": "Short description of scope",
+              "scopeName": "user_impersonation"
+            },
+            {
+              "description": "Short description of scope",
+              "scopeName": "user_management"
+            }
+          ],
+          "services": [],
+          "secretManagementOptions": null
+        },
+        "advanced": {
+          "apiProductSubscriptions": [
+            {
+              "productId": "veracity-platfrom-api",
+              "productName": "Veracity Platform API"
+            }
+          ],
+          "clients": [
+            {
+              "clientId": "$resources[?name== parameter('appName')].id",
+              "scopes": ["user_impersonation", "user_management"]
+            }
+          ],
+          "apiAcceses": [
+            {
+              "apiClientId": "$parameter('apiClientId')",
+              "scopes": ["user_impersonation"]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "apimProduct",
+      "value": "$resources[?name== parameter('appName')].sections.advanced.apiProductSubscriptions[*].{id:productId,subscriptionKey:key}",
+      "type": "object"
+    },
+    {
+      "name": "clientId",
+      "value": "$resources[?name== parameter('appName')].id",
+      "type": "string"
+    },
+    {
+      "name": "apiId",
+      "value": "$resources[?name== parameter('apiName')].id",
+      "type": "string"
+    }
+  ]
+}
