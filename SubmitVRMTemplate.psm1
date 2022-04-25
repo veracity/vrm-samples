@@ -45,7 +45,7 @@ param(
     $parametersBytes = [System.Text.Encoding]::UTF8.GetBytes($parameters)
     $parametersString =[Convert]::ToBase64String($parametersBytes)
     $payload = @{format=$format;template=$templateString;parameters=$parametersString} | ConvertTo-Json
-    Write-Host -ForegroundColor yellow "`nSubmiting template..."
+    Write-Host -ForegroundColor yellow "`nSubmitting template..."
     try {
         $response = Invoke-RestMethod $url -Method Post -Body $payload -Headers $headers -ContentType 'application/json'
         $bytes=[Convert]::FromBase64String($response)
